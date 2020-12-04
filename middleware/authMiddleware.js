@@ -41,7 +41,28 @@ const checkUser = (req, res, next) => {
     }
 };
 
+const CheckIfLogged = (req, res) => {
+    const token = req.body.token;
+    console.log(token)
+
+    if (token) {
+        jwt.verify(token, process.env.SecretKey, (err, decodedToken) => {
+            if (err) {
+                res.send({"verified": false})
+                console.log("Not veryfied")
+            } else {
+                res.send({"verified": true})
+                console.log("Veryfied")
+            }
+        });
+    } else {
+        res.send({"verified": false})
+        console.log("Not veryfied")
+    }
+};
+
 module.exports = {
     requireAuth,
-    checkUser
+    checkUser,
+    CheckIfLogged
 }
