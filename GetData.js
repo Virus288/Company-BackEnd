@@ -21,10 +21,11 @@ const getData = async (category, id) => {
     return new Promise((resolve, reject) => {
         console.log(query)
         con.query(query, (err, results) => {
-            if(err) {
-                return reject(err);
+            if (err){
+                return reject(err.sqlMessage);
+            }else{
+                resolve(results);
             }
-            resolve(results);
         });
     });
 }

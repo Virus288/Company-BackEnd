@@ -7,7 +7,7 @@ const AddOrders = async (itemid, store, user) => {
             if(err) {
                 return reject(err);
             }
-            resolve(results);
+            resolve("Success");
         });
     });
 

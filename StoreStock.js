@@ -1,14 +1,8 @@
 const {con} = require("./DBConnect")
 
-const getOrders = async (data) => {
-    if(data.done){
-        query = `SELECT * FROM orders WHERE IsDone = ${data.done}`
-    } else {
-        query = `SELECT * FROM orders`
-    }
-
+const GetStoreStock = async (store) => {
     return new Promise((resolve, reject) => {
-        con.query(query, (err, results) => {
+        con.query(`SELECT * FROM StoresStock where store LIKE '${store}'`, (err, results) => {
             if (err){
                 return reject(err.sqlMessage);
             }else{
@@ -20,5 +14,5 @@ const getOrders = async (data) => {
 }
 
 module.exports = {
-    getOrders
+    GetStoreStock
 }
