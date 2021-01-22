@@ -7,7 +7,7 @@
 ### DBPassword = Mysql password
 ### DBBase = Mysql database
 
-## Available Scripts
+# Available Scripts
 
 In the project directory, you can run:
 
