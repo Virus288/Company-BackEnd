@@ -1,4 +1,6 @@
 const {con} = require("./DBConnect")
+const fs = require("fs")
+const path = require('path');
 
 const addData = async (data) => {
     console.log(data)
@@ -32,7 +34,6 @@ const addData = async (data) => {
                 }
             }
         }
-        console.log(`INSERT INTO ${category} VALUES (${values})`)
 
         return new Promise((resolve, reject) => {
             con.query(`INSERT INTO ${category} VALUES (${values})`, (err, results) => {
@@ -72,7 +73,6 @@ const addData = async (data) => {
             IsDone: "DEFAULT",
             Date: data.date
         }
-
         let Data;
         await AddReq("payments", InnerData).then(data => Data=data);
         return Data

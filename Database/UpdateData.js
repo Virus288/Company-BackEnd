@@ -12,29 +12,43 @@ const updateData = async (data) => {
 
     // Get request from database
     const AddReq = async (category, data) => {
-        let values = "";
+        if (category === "employees") {
+            let values = "";
 
-        for(let i = 0; i < Object.keys(data).length; i++){
-            if(Object.keys(data)[i] !== "Category"){
-                if(Object.keys(data)[i] !== "id"){
-                    if((i + 1) === Object.keys(data).length){
-                        values += `${Object.keys(data)[i]} = '${data[Object.keys(data)[i]]}'`
-                    } else {
-                        values += `${Object.keys(data)[i]} = '${data[Object.keys(data)[i]]}', `
+            for (let i = 0; i < Object.keys(data).length; i++) {
+                if (Object.keys(data)[i] !== "Category") {
+                    if (Object.keys(data)[i] !== "id") {
+                        if ((i + 1) === Object.keys(data).length) {
+                            values += `${Object.keys(data)[i]} = '${data[Object.keys(data)[i]]}'`
+                        } else {
+                            values += `${Object.keys(data)[i]} = '${data[Object.keys(data)[i]]}', `
+                        }
                     }
                 }
             }
-        }
 
-        return new Promise((resolve, reject) => {
-            con.query(`Update ${category} SET ${values} WHERE id = ${data.id}`, (err, results) => {
-                if (err){
-                    return reject(err);
-                }else{
-                    resolve("Success");
-                }
-            });
-        }).catch((err) => ErrorHandler(err));
+            return new Promise((resolve, reject) => {
+                con.query(`Update ${category} SET ${values} WHERE id = ${data.id}`, (err, results) => {
+                    if (err) {
+                        return reject(err);
+                    } else {
+                        resolve("Success");
+                    }
+                });
+            }).catch((err) => ErrorHandler(err));
+
+        } else {
+
+            return new Promise((resolve, reject) => {
+                con.query(`Update ${category} SET amount = ${data.Amount} WHERE ItemId = ${data.Number}`, (err, results) => {
+                    if (err) {
+                        return reject(err);
+                    } else {
+                        resolve("Success");
+                    }
+                });
+            }).catch((err) => ErrorHandler(err));
+        }
     }
 
     // Check what kind of data user want
@@ -42,6 +56,11 @@ const updateData = async (data) => {
         // Employees
         let Data;
         await AddReq("employees", data).then(data => Data=data);
+        return Data
+    } else if(data.Category === "editStock") {
+        // Stock
+        let Data;
+        await AddReq("stock", data).then(data => Data = data);
         return Data
     } else {
         return ("Seems like there you didnt specify category of your data")

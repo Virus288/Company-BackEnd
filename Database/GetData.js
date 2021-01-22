@@ -52,7 +52,7 @@ const getData = async (data) => {
     } else if(data.stock){
         // Stock
         let Data;
-        await GetReq("stock", data.stock, "No data").then(data => Data=data);
+        await GetReq("stock", data.stock, "ItemId").then(data => Data=data);
         return Data
     } else if(data.orders){
         // Orders

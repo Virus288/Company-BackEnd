@@ -25,9 +25,6 @@ app.use(cors());
 // Addons
 app.use(authRoutes);
 
-// view engine
-app.set('view engine', 'ejs');
-
 // database connection
 const dbURI = process.env.MongoUrl;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
@@ -48,6 +45,14 @@ app.get("/getData", function(req, res){
 });
 
 app.post("/addData", function(req, res){
+    if(req.body.City !== undefined){
+        let data = `./SalesStats/${req.body.City}`
+
+        if(!fs.existsSync(data)){
+            fs.mkdirSync(data, { recursive: true })
+        }
+
+    }
     addData(req.body)
         .then(data => res.send({message: data, type: "success"}))
         .catch((err) => res.send({message: err, type: "error"}));
@@ -65,9 +70,34 @@ app.post('/UpdateDone', (req,res) => {
         .catch((err) => res.send({message: err, type: "error"}));
 });
 
+app.post("/adday", (req,res) => {
+    console.log(req.body)
+    let path = `SalesStats/${req.body.City}/${req.body.day}`
+
+    if(!fs.existsSync(path + ".json")){
+        let Data = {}
+        Data.day = req.body.day;
+        Data.profit = req.body.profit;
+        Data.sold = req.body.data;
+        let strData = JSON.stringify(Data)
+
+        try {
+            fs.writeFileSync(path + ".json", strData)
+        } catch (err) {
+            res.send({message: err, type: "error"})
+        }
+        res.send({message: "Success", type: "success"})
+        console.log("Success sanded")
+    } else {
+        res.send({message: "Seems like data you are trying to insert already exists", type: "error"})
+    }
+
+});
+
 app.get('/salesstats', (req,res) => {
     let data = `./SalesStats/${req.query.store}`
     let files = [];
+    let profits = [];
 
     if(!req.query.store){
         res.send("Sory but it seems like you didnt pass any store to get data from")
@@ -82,7 +112,14 @@ app.get('/salesstats', (req,res) => {
                 Readdir.forEach(file => {
                     files.push(file)
                 });
-                res.send(JSON.stringify(files))
+            files.forEach(file => {
+                let data2 = require(data + "/" + file)
+                profits.push(data2["profit"])
+            })
+            res.send(JSON.stringify({
+                files,
+                profits
+            }))
             } else {
                 res.send({Message: "No data"})
             }
