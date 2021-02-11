@@ -17,7 +17,6 @@ const {addData} = require("./Database/AddData");
 const app = express();
 
 // middleware
-app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
@@ -126,9 +125,16 @@ app.get('/salesstats', (req,res) => {
         }
     }
 });
-
-
-
-app.get('*', function(req, res){
-    res.status(404).send('Seems like there was an error with your data. Make sure that you are sending right type of data');
-});
+//
+//
+//
+// app.get('*', function(req, res){
+//     res.status(404).send('Seems like there was an error with your data. Make sure that you are sending right type of data');
+// });
+//
+//
+// const express = require('express')
+// const Cryptr = require('cryptr');
+// const cryptr = new Cryptr('myTotalySecretKey');
+// const encryptedString = cryptr.encrypt('bacon');
+// const decryptedString = cryptr.decrypt(encryptedString);
