@@ -31,7 +31,7 @@ class User {
         this.ValPass();
 
         if (Object.keys(this.errors).length === 0) {
-            register()
+            await this.register()
             return {Type: 1, Message: "Success"}
         } else {
             return this.errors
@@ -165,7 +165,6 @@ class User {
                 if (err){
                     return reject(err.sqlMessage);
                 }else{
-                    console.log(results)
                     resolve(results);
                 }
             });

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../User/User");
 require("dotenv").config()
 
 const requireAuth = (req, res, next) => {
@@ -30,8 +30,7 @@ const checkUser = (req, res, next) => {
                 res.locals.user = null;
                 next();
             } else {
-                let user = await User.findById(decodedToken.id);
-                res.locals.user = user;
+                res.locals.user = await User.findById(decodedToken.id);
                 next();
             }
         });

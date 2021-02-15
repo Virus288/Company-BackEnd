@@ -1,42 +1,58 @@
 // External modules
 const express = require('express');
-const mongoose = require('mongoose');
-const authRoutes = require('./routes/authRoutes');
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const fs = require('fs');
 require('dotenv').config();
 
+// const Cryptr = require('cryptr');
+// const cryptr = new Cryptr('myTotalySecretKey');
+// const encryptedString = cryptr.encrypt('bacon');
+// const decryptedString = cryptr.decrypt(encryptedString);
+
 // Internal modules
-const { checkUser, requireAuth } = require("./middleware/authMiddleware");
 const {getData} = require("./Database/GetData");
 const {UpdateDone} = require("./Database/UpdateDone");
 const {updateData} = require("./Database/UpdateData");
 const {addData} = require("./Database/AddData");
+const AuthRoutes = require("./User/LoginRoutes.js");
+const { verify } = require("./User/UserController")
 
 const app = express();
 
 // middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(
+    {
+        origin: 'http://localhost:3000',
+        credentials: true,
+    }
+));
 
-// Addons
-app.use(authRoutes);
+app.use(function(req, res, next) {
+    res.header('Content-Type', 'application/json;charset=UTF-8')
+    res.header('Access-Control-Allow-Credentials', true)
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+    )
+    next()
+})
 
-// database connection
-const dbURI = process.env.MongoUrl;
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
-  .then((result) => app.listen(5000))
-  .then((result) => console.log("App is listening on port 5000"))
-  .catch((err) => console.log(err));
+app.use(AuthRoutes);
 
+app.listen(5000, () => console.log("App is listening on port 5000"));
 
 app.get('/', (req, res) => res.send("Seems like that page isn't available at this moment."));
 
 app.get("/location", function(req, res){
     res.send(req.ip);
     console.log(req.ip);
+});
+
+app.get("/token", verify, function(req, res){
+    res.send("Verified")
 });
 
 app.get("/getData", function(req, res){
@@ -125,16 +141,7 @@ app.get('/salesstats', (req,res) => {
         }
     }
 });
-//
-//
-//
-// app.get('*', function(req, res){
-//     res.status(404).send('Seems like there was an error with your data. Make sure that you are sending right type of data');
-// });
-//
-//
-// const express = require('express')
-// const Cryptr = require('cryptr');
-// const cryptr = new Cryptr('myTotalySecretKey');
-// const encryptedString = cryptr.encrypt('bacon');
-// const decryptedString = cryptr.decrypt(encryptedString);
+
+app.get('*', function(req, res){
+    res.status(404).send('Seems like there was an error. Try again later');
+});
