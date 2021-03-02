@@ -1,67 +1,24 @@
 const jwt = require("jsonwebtoken");
-const User = require("../User/User");
 require("dotenv").config()
 
-const requireAuth = (req, res, next) => {
-    const token = req.cookies.jwt;
+verify = (req, res, next) => {
+    let accessToken = req.cookies.JWT
 
-    // check json web token exists & is verified
-    if (token) {
-        jwt.verify(token, process.env.SecretKey, (err, decodedToken) => {
-            if (err) {
-                console.log(err.message);
-                res.redirect('/login');
-            } else {
-                console.log(decodedToken);
-                next();
-            }
-        });
-    } else {
-        res.redirect('/login');
+    // Jeśli wygasa, jest No authorisation
+    if (!accessToken){
+        return res.status(403).send({message: "Token invalid", type: 1})
     }
-};
 
-// Check current user
-const checkUser = (req, res, next) => {
-    const token = req.cookies.jwt;
-    if (token) {
-        jwt.verify(token, process.env.SecretKey, async (err, decodedToken) => {
-            if (err) {
-                res.locals.user = null;
-                next();
-            } else {
-                res.locals.user = await User.findById(decodedToken.id);
-                next();
-            }
-        });
-    } else {
-        res.locals.user = null;
-        next();
+    let payload
+    try{
+        // Zbadaj token
+        payload = jwt.verify(accessToken, process.env.JWT)
+        next()
     }
-};
-
-const CheckIfLogged = (req, res) => {
-    const token = req.body.token;
-    console.log(token)
-
-    if (token) {
-        jwt.verify(token, process.env.SecretKey, (err, decodedToken) => {
-            if (err) {
-                res.send({"verified": false})
-                console.log("Not veryfied")
-            } else {
-                res.send({"verified": true})
-                console.log("Veryfied")
-            }
-        });
-    } else {
-        res.send({"verified": false})
-        console.log("Not veryfied")
+    catch(e){
+        // Wywal błąd jeśli nastąpi
+        return res.status(401).send(e)
     }
-};
-
-module.exports = {
-    requireAuth,
-    checkUser,
-    CheckIfLogged
 }
+
+module.exports = { verify }

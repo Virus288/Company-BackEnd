@@ -1,6 +1,8 @@
 // External modules
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const mongoose = require("mongoose")
+const User = require("./Mongo/UserSchema")
 const cors = require("cors");
 const fs = require('fs');
 require('dotenv').config();
@@ -16,9 +18,15 @@ const {UpdateDone} = require("./Database/UpdateDone");
 const {updateData} = require("./Database/UpdateData");
 const {addData} = require("./Database/AddData");
 const AuthRoutes = require("./User/LoginRoutes.js");
-const { verify } = require("./User/UserController")
+const { verify } = require("./middleware/authMiddleware")
 
 const app = express();
+console.log("App started. Pls wait for mongoDB to connect")
+
+const dbURI = MongoUrl = process.env.MongoUrl
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
+    .then(() => app.listen(5000, () => console.log("Connected to mongo. Listening on 5000")))
+    .catch((err) => console.log(err));
 
 // middleware
 app.use(express.json());
@@ -26,7 +34,7 @@ app.use(cookieParser());
 app.use(cors(
     {
         origin: 'http://localhost:3000',
-        credentials: true,
+        credentials: true
     }
 ));
 
@@ -42,17 +50,38 @@ app.use(function(req, res, next) {
 
 app.use(AuthRoutes);
 
-app.listen(5000, () => console.log("App is listening on port 5000"));
+app.use(verify)
 
 app.get('/', (req, res) => res.send("Seems like that page isn't available at this moment."));
+
+app.get("/test", function(req, res){
+    // Sprawdza czy istnieje już taki user. Jeśli nie, tworzy go
+    User.find(function (err, results) {
+        if (err) return console.error(err);
+        if(results.length === 0){
+            SaveData()
+        } else {
+            console.log(results)
+        }
+    })
+
+    const SaveData = async () => {
+        try {
+            const user = await User.create({name: "Banana", email: "Email", password: "PassworCuZWhyNot", role: "Admin", group: 0});
+            res.status(201).json({user: user, success: true})
+        } catch (err) {
+            res.status(400).json(err)
+        }
+    }
+});
 
 app.get("/location", function(req, res){
     res.send(req.ip);
     console.log(req.ip);
 });
 
-app.get("/token", verify, function(req, res){
-    res.send("Verified")
+app.get("/token", function(req, res){
+    res.send(true)
 });
 
 app.get("/getData", function(req, res){

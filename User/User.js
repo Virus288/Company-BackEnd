@@ -55,7 +55,7 @@ class User {
             }
         } else {
             this.addError("email", "Email invalid")
-            return this.errors
+            return {data: {Type: 0}, errors: this.errors}
         }
     }
 
