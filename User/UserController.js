@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken")
 const {User} = require("./User");
+const UserSchema = require("./UserSchema")
 
 // Register
 module.exports.register = (req, res) => {
-    let Data = new User(req.body.email, req.body.password, req.body.name, req.body.password2);
+    let Data = new User(req.body.username, req.body.email, req.body.password, req.body.password2);
 
     Data.ValRegister().then(data => {
         res.send(data)
@@ -12,17 +13,15 @@ module.exports.register = (req, res) => {
 
 // Login
 module.exports.login = async (req, res) => {
-    let Data = new User(req.body.email, req.body.password);
+    let Data = new User("undefined", req.body.email, req.body.password);
 
-    await Data.ValLogin().then(data => {
-        console.log(data)
-        // Zaczni wysyłać info "type 0" przy erroże
-        if (data.data.Type === 1) {
+    Data.ValLogin().then(data => {
+        if(!data.Type){
+            return data
+        } else {
             let token = createToken(data.name);
             res.cookie("JWT", token, {httpOnly: true, maxAge: maxAge * 1000});
             res.send(data.data)
-        } else {
-            res.send(data)
         }
     })
 }
@@ -30,6 +29,18 @@ module.exports.login = async (req, res) => {
 module.exports.logout = async (req, res) => {
     res.cookie("JWT", "Logout", {httpOnly: true, maxAge: 0});
     res.send("LoggedOut")
+}
+
+module.exports.update = async (req, res) => {
+    let newValues = {}
+    let type = req.body.type
+    newValues[type] = req.body.name
+    await UserSchema.findOneAndUpdate({email: req.body.email}, newValues, {new: true}, (err, data) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(data);
+    });
 }
 
 // Token

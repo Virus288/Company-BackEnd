@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     name : {
         type: String,
         required: true
@@ -21,7 +25,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     group: {
-        type: Number,
+        type: String,
         required: true
     },
     employees: [Number]

@@ -11,13 +11,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8549c21-8329-46f8-a3d7-2eb343144238" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Mongo/UserSchema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/DBController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/DBRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/DailyStats/DailySchema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/Orders/Orders.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/Payments/PaymentsSchema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/Stock/StockSchema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/Stores/StoresSchema.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/AddData.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/DBConnect.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/GetData.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/UpdateData.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/UpdateDone.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mongo/UserSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/User/UserSchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SalesStats/Bojanowo/2021-01-05.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SalesStats/Rawicz/2020-12-14.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SalesStats/Rawicz/2020-12-15.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SalesStats/Rawicz/2020-12-16.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SalesStats/Rawicz/2020-12-17.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SalesStats/Rawicz/2021-01-05.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SalesStats/Stores.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/User/LoginRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/User/LoginRoutes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/User/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/User/User.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/User/UserController.js" beforeDir="false" afterPath="$PROJECT_DIR$/User/UserController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/middleware/authMiddleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/authMiddleware.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/authRoutes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +62,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="14.15.1" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Auth" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -51,17 +72,17 @@
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/Auth" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/public" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Database" />
       <recent name="$PROJECT_DIR$/User" />
       <recent name="$PROJECT_DIR$/public/fonts" />
       <recent name="$PROJECT_DIR$/Addons" />
       <recent name="$PROJECT_DIR$/UsersAddons" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/Auth" />
+      <recent name="$PROJECT_DIR$/public" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -200,7 +221,21 @@
       <workItem from="1614612935219" duration="3000" />
       <workItem from="1614624117482" duration="5627000" />
       <workItem from="1614630840810" duration="2254000" />
-      <workItem from="1614691353884" duration="1842000" />
+      <workItem from="1614691353884" duration="3031000" />
+      <workItem from="1614758964475" duration="142000" />
+      <workItem from="1614768116775" duration="4946000" />
+      <workItem from="1615014936153" duration="11000" />
+      <workItem from="1615017241796" duration="22000" />
+      <workItem from="1615017298978" duration="7000" />
+      <workItem from="1615017330538" duration="2000" />
+      <workItem from="1615017425511" duration="7000" />
+      <workItem from="1615017445463" duration="872000" />
+      <workItem from="1615022825700" duration="195000" />
+      <workItem from="1615027785837" duration="9000" />
+      <workItem from="1615035241164" duration="163000" />
+      <workItem from="1615035424424" duration="6000" />
+      <workItem from="1615035501988" duration="3000" />
+      <workItem from="1615035512128" duration="7173000" />
     </task>
     <servers />
   </component>
@@ -231,9 +266,10 @@
       <screen x="0" y="25" width="2560" height="1330" />
     </state>
     <state x="464" y="495" key="#com.intellij.fileTypes.FileTypeChooser/2560.193.1920.1055/0.25.2560.1330@0.25.2560.1330" timestamp="1606744171207" />
-    <state x="640" y="438" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1613076150126">
-      <screen x="0" y="25" width="2560" height="1322" />
+    <state x="640" y="437" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1615045246968">
+      <screen x="0" y="25" width="2560" height="1320" />
     </state>
+    <state x="640" y="437" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.193.1920.1055/0.25.2560.1320@0.25.2560.1320" timestamp="1615045246968" />
     <state x="640" y="438" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.193.1920.1055/0.25.2560.1322@0.25.2560.1322" timestamp="1613076150126" />
     <state x="640" y="440" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.193.1920.1055/0.25.2560.1330@0.25.2560.1330" timestamp="1609077755380" />
     <state x="1392" y="125" width="1068" height="1129" key="DiffContextDialog" timestamp="1607011884200">
