@@ -17,18 +17,18 @@ module.exports.login = async (req, res) => {
 
     Data.ValLogin().then(data => {
         if(!data.Type){
-            return data
+            res.send(data)
         } else {
-            let token = createToken(data.name);
+            let token = createToken({id: data.Id, group: data.Group});
             res.cookie("JWT", token, {httpOnly: true, maxAge: maxAge * 1000});
-            res.send(data.data)
+            res.send({Type: data.Type, Message: data.Message, Group: data.Group})
         }
     })
 }
 
 module.exports.logout = async (req, res) => {
     res.cookie("JWT", "Logout", {httpOnly: true, maxAge: 0});
-    res.send("LoggedOut")
+    res.send({Type: 1, Message: "Success"})
 }
 
 module.exports.update = async (req, res) => {

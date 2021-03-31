@@ -1,20 +1,26 @@
 const mongoose = require('mongoose');
 
 const dailySchema = new mongoose.Schema({
-    Street : {
+    Store : {
         type: String,
         required: [true]
     },
-    BuildingNumber : {
+    Sold : {
+        type: Object,
+        required: [true]
+    },
+    Date : {
+        type: Object,
+        required: [true]
+    },
+    Summary: {
         type: Number,
         required: [true]
     },
-    City : {
+    group: {
         type: String,
-        required: [true]
-    },
-    Employees : [Object],
-    Stock : [Object],
+        required: true
+    }
 }, { collection: 'DailySchema' });
 
 const DailySchema = mongoose.model('dailySchema', dailySchema);

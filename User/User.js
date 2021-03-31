@@ -46,35 +46,41 @@ class User {
     }
 
     async ValLogin() {
-        await this.ValEmail();
-        if(this.errors > 0){
+        if(!this.password){
+            console.log("No password")
+            this.addError("password", "Password invalid")
+            return this.errors
+        } else if(!this.email){
             this.addError("email", "Email invalid")
             return this.errors
         } else {
-            return await this.CheckUser(this.email)
-                .then(async (data) => {
-                    if(data.length > 0){
-                        console.log()
-                        return await this.login(data[0].password)
-                    } else {
-                        this.addError("email", "Email not registered")
-                        return this.errors
-                    }
-                })
-
+            await this.ValEmail();
+            if(this.errors > 0){
+                this.addError("email", "Email invalid")
+                return this.errors
+            } else {
+                return await this.CheckUser(this.email)
+                    .then(async (data) => {
+                        if(data.length > 0){
+                            return await this.login(data[0].password, data[0]._id, data[0].group)
+                        } else {
+                            this.addError("email", "Email not registered")
+                            return this.errors
+                        }
+                    })
+            }
         }
     }
 
     // Check name
     ValUsername(){
-        if(this.username.length <= 4){
+        if(!this.username || this.username.length <= 4){
             this.addError("username", "Username length should be at least 4 characters long")
         }
     }
 
     ValEmail(){
         if(!validator.isEmail(this.email)){
-            console.log(this.email)
             this.addError("email", "Email invalid")
         }
     }
@@ -110,11 +116,11 @@ class User {
         return user
     })
 
-    async login(password) {
+    async login(password, id, group) {
         const auth = await bcrypt.compare(this.password, password)
         if (auth) {
             console.log("Success")
-            return {Type: 1, Message: "Success"}
+            return {Type: 1, Message: "Success", Id: id, Group: group}
         } else {
             this.addError("password", "Password invalid")
             return this.errors
@@ -122,7 +128,7 @@ class User {
     }
 
     register = async () => {
-        const EncryptedKey = new Cryptr('Le9~M8>Pn-)zLma,=wP-2pT?UYK7;[.ZKgya');
+        const EncryptedKey = new Cryptr(process.env.EncryptKey);
         const encryptedString = EncryptedKey.encrypt(this.email);
 
         const salt = await bcrypt.genSalt();

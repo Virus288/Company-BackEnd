@@ -2,9 +2,11 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const mongoose = require("mongoose")
+const schema = require("./GraphQLSchema/schema")
+const {graphqlHTTP} = require('express-graphql');
 const cors = require("cors");
-const fs = require('fs');
 require('dotenv').config();
+const jwt = require("jsonwebtoken");
 
 // Internal modules
 const AuthRoutes = require("./User/LoginRoutes.js");
@@ -26,7 +28,6 @@ app.use(cors(
         credentials: true
     }
 ));
-
 app.use(function(req, res, next) {
     res.header('Content-Type', 'application/json;charset=UTF-8')
     res.header('Access-Control-Allow-Credentials', true)
@@ -37,15 +38,76 @@ app.use(function(req, res, next) {
     next()
 })
 
+// Additional routes for security
 app.use(AuthRoutes);
 app.use(verify)
 
-app.get("/getData", function(req, res){
-    getData(req.query).then(data => res.send(data))
-});
+app.post('/LoggedUser', (req, res) => {
+    let payload
+    try{
+        payload = jwt.verify(req.cookies.JWT, process.env.JWT)
+        let LoggedUser = mongoose.createConnection(process.env.MongoPreFix + payload.id.id , { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
 
-app.post("/addData", function(req, res){
-});
+        const OrderModel = LoggedUser.model('Order', new mongoose.Schema({
+            Amount : {
+                type: Number,
+                required: [true]
+            },
+            Code : {
+                type: Number,
+                required: [true]
+            },
+            Date : {
+                type: Object,
+                required: [true]
+            },
+            Done : {
+                type: Boolean,
+                required: [true],
+                default: false
+            },
+            Store: {
+                type: Number,
+                required: [true]
+            },
+            AddedBy: {
+                type: String,
+                required: [true]
+            },
+            group: {
+                type: String,
+                required: true
+            }
+        }, { collection: 'Order' }));
+
+        OrderModel.find().then(data => {
+            console.log(data)
+            res.send(data)
+        })
+
+        // res.send({ Type: 1, Group: payload.id.group})
+    }
+    catch (e) {
+        res.send(e)
+    }
+})
+
+// Verification api for token validation in front
+app.get('/token', (req, res) => {
+        let payload
+        try{
+            payload = jwt.verify(req.cookies.JWT, process.env.JWT)
+            res.send({ Type: 1, Group: payload.id.group})
+        }
+        catch (e) {
+            res.send(e)
+        }
+})
+
+// Graph
+app.use('/graphql', graphqlHTTP({
+    schema: schema
+}));
 
 app.get('*', function(req, res){
     res.status(404).send('Seems like there was an error. Try again later');

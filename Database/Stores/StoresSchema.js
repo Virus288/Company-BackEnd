@@ -13,8 +13,12 @@ const storeSchema = new mongoose.Schema({
         type: String,
         required: [true]
     },
-    Employees : [Object],
-    Stock : [Object],
+    Employees : Object,
+    Stock : Object,
+    group: {
+        type: String,
+        required: true
+    }
 }, { collection: 'Store' });
 
 const Store = mongoose.model('store', storeSchema);

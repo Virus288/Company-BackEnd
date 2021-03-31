@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema({
-    name : {
+    Name : {
         type: String,
         required: true
     },
-    amount : {
+    Amount : {
         type: Number,
         required: [true, 'Please enter amount of product']
     },
@@ -15,10 +15,21 @@ const paymentSchema = new mongoose.Schema({
         default: false
     },
     Date : {
-        type: Timestamp,
-        required: [true],
-        default: false
+        type: Object,
+        required: [true]
     },
+    Store : {
+        type: Number,
+        required: [true]
+    },
+    AddedBy: {
+        type: String,
+        required: [true]
+    },
+    group: {
+        type: String,
+        required: true
+    }
 }, { collection: 'Payment' });
 
 const Payment = mongoose.model('payment', paymentSchema);

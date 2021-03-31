@@ -27,8 +27,7 @@ const userSchema = new mongoose.Schema({
     group: {
         type: String,
         required: true
-    },
-    employees: [Number]
+    }
 });
 
 const User = mongoose.model('user', userSchema);
