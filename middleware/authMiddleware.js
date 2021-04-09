@@ -12,7 +12,6 @@ verify = (req, res, next) => {
     try{
         // Trying to save payload will automatically reject
         payload = jwt.verify(accessToken, process.env.JWT)
-        // console.log(payload)
         next()
     }
     catch(e){

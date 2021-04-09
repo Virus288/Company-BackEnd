@@ -62,7 +62,7 @@ class User {
                 return await this.CheckUser(this.email)
                     .then(async (data) => {
                         if(data.length > 0){
-                            return await this.login(data[0].password, data[0]._id, data[0].group)
+                            return await this.login(data[0].password, data[0]._id, data[0].FirstOpen, data[0].group)
                         } else {
                             this.addError("email", "Email not registered")
                             return this.errors
@@ -116,11 +116,11 @@ class User {
         return user
     })
 
-    async login(password, id, group) {
+    async login(password, id, FirstOpen, Group) {
         const auth = await bcrypt.compare(this.password, password)
         if (auth) {
             console.log("Success")
-            return {Type: 1, Message: "Success", Id: id, Group: group}
+            return {Type: 1, Message: "Success", Id: id, FirstOpen: FirstOpen, Group: Group}
         } else {
             this.addError("password", "Password invalid")
             return this.errors
@@ -134,7 +134,7 @@ class User {
         const salt = await bcrypt.genSalt();
         this.password = await bcrypt.hash(this.password, salt)
 
-        let NewUser = new UserSchema({ name: this.username, email: this.email, password: this.password, role: "admin", group: encryptedString,  employees: [] });
+        let NewUser = new UserSchema({ name: this.username, email: this.email, password: this.password, role: "admin", group: encryptedString, FirstOpen: true});
 
         await NewUser.save()
             .catch(err => {

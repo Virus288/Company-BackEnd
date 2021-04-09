@@ -1,6 +1,4 @@
 // File left for debbuging and hard adding stuff
-
-
 const { Router } = require('express');
 const { GetData, PostData} = require('./DBController');
 

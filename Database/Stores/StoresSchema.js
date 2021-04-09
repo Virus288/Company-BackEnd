@@ -14,13 +14,7 @@ const storeSchema = new mongoose.Schema({
         required: [true]
     },
     Employees : Object,
-    Stock : Object,
-    group: {
-        type: String,
-        required: true
-    }
+    Stock : Object
 }, { collection: 'Store' });
 
-const Store = mongoose.model('store', storeSchema);
-
-module.exports = Store;
+module.exports = storeSchema;

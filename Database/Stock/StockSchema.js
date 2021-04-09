@@ -16,13 +16,7 @@ const stockSchema = new mongoose.Schema({
     IsAvailable : {
         type: Boolean,
         required: [true]
-    },
-    group: {
-        type: String,
-        required: true
     }
 }, { collection: 'Stock' });
 
-const Stock = mongoose.model('stock', stockSchema);
-
-module.exports = Stock;
+module.exports = stockSchema;

@@ -25,13 +25,7 @@ const ordersSchema = new mongoose.Schema({
     AddedBy: {
         type: String,
         required: [true]
-    },
-    group: {
-        type: String,
-        required: true
     }
 }, { collection: 'Order' });
 
-const Order = mongoose.model('order', ordersSchema);
-
-module.exports = Order;
+module.exports = ordersSchema ;

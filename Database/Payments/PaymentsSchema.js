@@ -25,13 +25,7 @@ const paymentSchema = new mongoose.Schema({
     AddedBy: {
         type: String,
         required: [true]
-    },
-    group: {
-        type: String,
-        required: true
     }
 }, { collection: 'Payment' });
 
-const Payment = mongoose.model('payment', paymentSchema);
-
-module.exports = Payment;
+module.exports = paymentSchema;

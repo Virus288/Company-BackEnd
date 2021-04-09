@@ -27,7 +27,12 @@ const userSchema = new mongoose.Schema({
     group: {
         type: String,
         required: true
-    }
+    },
+    FirstOpen: {
+        type: Boolean,
+        required: [true],
+        default: true
+    },
 });
 
 const User = mongoose.model('user', userSchema);

@@ -21,7 +21,7 @@ module.exports.login = async (req, res) => {
         } else {
             let token = createToken({id: data.Id, group: data.Group});
             res.cookie("JWT", token, {httpOnly: true, maxAge: maxAge * 1000});
-            res.send({Type: data.Type, Message: data.Message, Group: data.Group})
+            res.send({Type: data.Type, Message: data.Message, FirstOpen: data.FirstOpen})
         }
     })
 }
@@ -32,19 +32,16 @@ module.exports.logout = async (req, res) => {
 }
 
 module.exports.update = async (req, res) => {
-    let newValues = {}
-    let type = req.body.type
-    newValues[type] = req.body.name
-    await UserSchema.findOneAndUpdate({email: req.body.email}, newValues, {new: true}, (err, data) => {
+    await UserSchema.findOneAndUpdate({email: req.body.email}, {FirstOpen: req.body.FirstOpen}, (err, data) => {
         if (err) {
             console.log(err);
         }
-        console.log(data);
+        // console.log(data);
     });
 }
 
 // Token
-const maxAge = 24 * 60 * 60;
+const maxAge = 15 * 60;
 
 const createToken = (id) => {
     return jwt.sign({id}, process.env.JWT, {

@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 
 // Internal modules
 const AuthRoutes = require("./User/LoginRoutes.js");
+const LoggedRoutes = require('./Logged/LoggedRoutes')
 const { verify } = require("./middleware/authMiddleware")
 
 const app = express();
@@ -41,63 +42,14 @@ app.use(function(req, res, next) {
 // Additional routes for security
 app.use(AuthRoutes);
 app.use(verify)
-
-app.post('/LoggedUser', (req, res) => {
-    let payload
-    try{
-        payload = jwt.verify(req.cookies.JWT, process.env.JWT)
-        let LoggedUser = mongoose.createConnection(process.env.MongoPreFix + payload.id.id , { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
-
-        const OrderModel = LoggedUser.model('Order', new mongoose.Schema({
-            Amount : {
-                type: Number,
-                required: [true]
-            },
-            Code : {
-                type: Number,
-                required: [true]
-            },
-            Date : {
-                type: Object,
-                required: [true]
-            },
-            Done : {
-                type: Boolean,
-                required: [true],
-                default: false
-            },
-            Store: {
-                type: Number,
-                required: [true]
-            },
-            AddedBy: {
-                type: String,
-                required: [true]
-            },
-            group: {
-                type: String,
-                required: true
-            }
-        }, { collection: 'Order' }));
-
-        OrderModel.find().then(data => {
-            console.log(data)
-            res.send(data)
-        })
-
-        // res.send({ Type: 1, Group: payload.id.group})
-    }
-    catch (e) {
-        res.send(e)
-    }
-})
+app.use(LoggedRoutes)
 
 // Verification api for token validation in front
 app.get('/token', (req, res) => {
         let payload
         try{
             payload = jwt.verify(req.cookies.JWT, process.env.JWT)
-            res.send({ Type: 1, Group: payload.id.group})
+            res.send({ Type: 1})
         }
         catch (e) {
             res.send(e)

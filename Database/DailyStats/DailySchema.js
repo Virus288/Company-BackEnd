@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const dailySchema = new mongoose.Schema({
     Store : {
-        type: String,
+        type: Number,
         required: [true]
     },
     Sold : {
@@ -16,13 +16,7 @@ const dailySchema = new mongoose.Schema({
     Summary: {
         type: Number,
         required: [true]
-    },
-    group: {
-        type: String,
-        required: true
     }
 }, { collection: 'DailySchema' });
 
-const DailySchema = mongoose.model('dailySchema', dailySchema);
-
-module.exports = DailySchema;
+module.exports = dailySchema;
