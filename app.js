@@ -1,12 +1,18 @@
 // External modules
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const fs = require('fs');
+const https = require('https');
+const http = require('http');
 const mongoose = require("mongoose")
 const schema = require("./GraphQLSchema/schema")
 const {graphqlHTTP} = require('express-graphql');
 const cors = require("cors");
 require('dotenv').config();
 const jwt = require("jsonwebtoken");
+
+const key = fs.readFileSync("./.cert/key.pem")
+const cert = fs.readFileSync("./.cert/cert.pem")
 
 // Internal modules
 const AuthRoutes = require("./User/LoginRoutes.js");
@@ -17,7 +23,21 @@ const app = express();
 console.log("App started. Pls wait for mongoDB to connect")
 
 mongoose.connect(process.env.MongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
-    .then(() => app.listen(5000, () => console.log("Connected to mongo. Listening on 5000")))
+    .then(() => {
+        // Listen on https
+        //
+        // const httpsServer = https.createServer({ key, cert }, app);
+        // httpsServer.listen(5000, () => {
+        //     console.log('Connected to mongo. Listening on 5000');
+        // });
+        // Listen on http
+        //
+        const httpServer = http.createServer(app);
+        httpServer.listen(5000, () => {
+            console.log('Connected to mongo. Listening on 5000');
+        });
+
+    })
     .catch((err) => console.log(err));
 
 // middleware

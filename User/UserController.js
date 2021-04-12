@@ -41,7 +41,7 @@ module.exports.update = async (req, res) => {
 }
 
 // Token
-const maxAge = 15 * 60;
+const maxAge = 30 * 60;
 
 const createToken = (id) => {
     return jwt.sign({id}, process.env.JWT, {
